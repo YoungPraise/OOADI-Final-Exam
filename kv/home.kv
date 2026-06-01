@@ -1,0 +1,85 @@
+#:kivy 2.0
+
+<HomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(30)
+        spacing: dp(20)
+        canvas.before:
+            Color:
+                rgba: 0.08, 0.12, 0.08, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # ── App Title ──
+        Label:
+            text: "🌿 MedicinalPlants"
+            font_size: dp(32)
+            bold: True
+            color: 0.4, 0.85, 0.4, 1
+            size_hint_y: None
+            height: dp(60)
+            halign: 'center'
+
+        # ── Subtitle ──
+        Label:
+            text: "Type an illness to find natural remedies"
+            font_size: dp(14)
+            color: 0.6, 0.8, 0.6, 0.8
+            size_hint_y: None
+            height: dp(30)
+            halign: 'center'
+
+        # ── Spacer ──
+        Widget:
+            size_hint_y: 0.1
+
+        # ── Search Box ──
+        TextInput:
+            id: search_input
+            hint_text: "e.g. Malaria, Fever, Diabetes..."
+            hint_text_color: 0.4, 0.5, 0.4, 1
+            foreground_color: 0.9, 0.95, 0.9, 1
+            background_color: 0.12, 0.18, 0.12, 1
+            cursor_color: 0.4, 0.85, 0.4, 1
+            font_size: dp(16)
+            size_hint_y: None
+            height: dp(50)
+            padding: [dp(15), dp(12)]
+            multiline: False
+            on_text_validate: root.on_search()
+
+        # ── Error Message (hidden by default) ──
+        Label:
+            id: error_label
+            text: ""
+            color: 1, 0.4, 0.4, 1
+            font_size: dp(13)
+            size_hint_y: None
+            height: dp(25)
+            halign: 'center'
+
+        # ── Search Button ──
+        Button:
+            text: "Search"
+            font_size: dp(16)
+            bold: True
+            size_hint_y: None
+            height: dp(50)
+            background_color: 0.2, 0.6, 0.2, 1
+            color: 1, 1, 1, 1
+            on_press: root.on_search()
+
+        # ── Spacer ──
+        Widget:
+            size_hint_y: 0.4
+
+        # ── Footer ──
+        Label:
+            text: "Powered by traditional medicine knowledge"
+            font_size: dp(11)
+            color: 0.3, 0.5, 0.3, 0.7
+            size_hint_y: None
+            height: dp(25)
+            halign: 'center'
