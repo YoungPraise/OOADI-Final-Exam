@@ -1,0 +1,138 @@
+#:kivy 2.0
+
+<PlantCard@BoxLayout>:
+    plant_data: {}
+    orientation: 'vertical'
+    size_hint_y: None
+    height: dp(120)
+    padding: dp(15)
+    spacing: dp(6)
+    canvas.before:
+        Color:
+            rgba: 0.12, 0.2, 0.12, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(10)]
+        Color:
+            rgba: 0.2, 0.5, 0.2, 0.4
+        Line:
+            rounded_rectangle: self.x, self.y, self.width, self.height, dp(10)
+            width: 1.2
+
+    Label:
+        id: card_name
+        text: ""
+        font_size: dp(17)
+        bold: True
+        color: 0.4, 0.85, 0.4, 1
+        halign: 'left'
+        text_size: self.size
+        size_hint_y: None
+        height: dp(30)
+
+    Label:
+        id: card_scientific
+        text: ""
+        font_size: dp(13)
+        italic: True
+        color: 0.5, 0.75, 0.5, 0.8
+        halign: 'left'
+        text_size: self.size
+        size_hint_y: None
+        height: dp(22)
+
+    Label:
+        id: card_parts
+        text: ""
+        font_size: dp(12)
+        color: 0.6, 0.8, 0.6, 0.7
+        halign: 'left'
+        text_size: self.size
+        size_hint_y: None
+        height: dp(20)
+
+
+<ResultScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(15)
+        canvas.before:
+            Color:
+                rgba: 0.08, 0.12, 0.08, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # ── Top Bar ──
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+
+            Button:
+                text: "← Back"
+                size_hint_x: None
+                width: dp(90)
+                font_size: dp(14)
+                background_color: 0.15, 0.25, 0.15, 1
+                color: 0.4, 0.85, 0.4, 1
+                on_press: root.go_back()
+
+            Label:
+                id: illness_title
+                text: ""
+                font_size: dp(20)
+                bold: True
+                color: 0.4, 0.85, 0.4, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+
+        # ── Divider ──
+        BoxLayout:
+            size_hint_y: None
+            height: dp(1)
+            canvas.before:
+                Color:
+                    rgba: 0.2, 0.5, 0.2, 0.5
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        # ── Illness Description ──
+        Label:
+            id: illness_description
+            text: ""
+            font_size: dp(13)
+            color: 0.65, 0.8, 0.65, 0.85
+            halign: 'left'
+            valign: 'top'
+            text_size: self.width, None
+            size_hint_y: None
+            height: self.minimum_height
+
+        # ── Plants Found Label ──
+        Label:
+            id: plants_found_label
+            text: ""
+            font_size: dp(12)
+            color: 0.4, 0.65, 0.4, 0.7
+            halign: 'left'
+            size_hint_y: None
+            height: dp(22)
+            text_size: self.size
+
+        # ── Scrollable Plant Cards ──
+        ScrollView:
+            do_scroll_x: False
+
+            BoxLayout:
+                id: cards_container
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(12)
+                padding: [0, dp(5)]
