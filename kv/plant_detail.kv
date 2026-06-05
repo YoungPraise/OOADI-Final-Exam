@@ -1,0 +1,218 @@
+#:kivy 2.0
+
+<PlantDetailScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(15)
+        canvas.before:
+            Color:
+                rgba: 0.08, 0.12, 0.08, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # ── Top Bar ──
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+
+            Button:
+                text: "← Back"
+                size_hint_x: None
+                width: dp(90)
+                font_size: dp(14)
+                background_color: 0.15, 0.25, 0.15, 1
+                color: 0.4, 0.85, 0.4, 1
+                on_press: root.go_back()
+
+            Label:
+                id: plant_name_label
+                text: ""
+                font_size: dp(22)
+                bold: True
+                color: 0.4, 0.85, 0.4, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+
+        # ── Divider ──
+        BoxLayout:
+            size_hint_y: None
+            height: dp(1)
+            canvas.before:
+                Color:
+                    rgba: 0.2, 0.5, 0.2, 0.5
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        # ── Scrollable Content ──
+        ScrollView:
+            do_scroll_x: False
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(18)
+                padding: [dp(5), dp(10)]
+
+                # ── Local Name ──
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(4)
+
+                    Label:
+                        text: "LOCAL NAME"
+                        font_size: dp(11)
+                        color: 0.4, 0.7, 0.4, 0.7
+                        size_hint_y: None
+                        height: dp(20)
+                        halign: 'left'
+                        text_size: self.size
+
+                    Label:
+                        id: local_name_label
+                        text: ""
+                        font_size: dp(15)
+                        color: 0.85, 0.95, 0.85, 1
+                        size_hint_y: None
+                        height: dp(25)
+                        halign: 'left'
+                        text_size: self.size
+
+                # ── Parts Used ──
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(4)
+
+                    Label:
+                        text: "PARTS USED"
+                        font_size: dp(11)
+                        color: 0.4, 0.7, 0.4, 0.7
+                        size_hint_y: None
+                        height: dp(20)
+                        halign: 'left'
+                        text_size: self.size
+
+                    Label:
+                        id: parts_used_label
+                        text: ""
+                        font_size: dp(15)
+                        color: 0.85, 0.95, 0.85, 1
+                        size_hint_y: None
+                        height: dp(25)
+                        halign: 'left'
+                        text_size: self.size
+
+                # ── Preparation Method ──
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(4)
+
+                    Label:
+                        text: "PREPARATION METHOD"
+                        font_size: dp(11)
+                        color: 0.4, 0.7, 0.4, 0.7
+                        size_hint_y: None
+                        height: dp(20)
+                        halign: 'left'
+                        text_size: self.size
+
+                    Label:
+                        id: preparation_label
+                        text: ""
+                        font_size: dp(15)
+                        color: 0.85, 0.95, 0.85, 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        halign: 'left'
+                        text_size: self.width, None
+
+                # ── Dosage ──
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(4)
+
+                    Label:
+                        text: "DOSAGE"
+                        font_size: dp(11)
+                        color: 0.4, 0.7, 0.4, 0.7
+                        size_hint_y: None
+                        height: dp(20)
+                        halign: 'left'
+                        text_size: self.size
+
+                    Label:
+                        id: dosage_label
+                        text: ""
+                        font_size: dp(15)
+                        color: 0.85, 0.95, 0.85, 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        halign: 'left'
+                        text_size: self.width, None
+
+                # ── Side Effects ──
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(4)
+
+                    Label:
+                        text: "SIDE EFFECTS"
+                        font_size: dp(11)
+                        color: 0.4, 0.7, 0.4, 0.7
+                        size_hint_y: None
+                        height: dp(20)
+                        halign: 'left'
+                        text_size: self.size
+
+                    Label:
+                        id: side_effects_label
+                        text: ""
+                        font_size: dp(15)
+                        color: 1, 0.6, 0.4, 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        halign: 'left'
+                        text_size: self.width, None
+
+                # ── Scientific Name ──
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(4)
+
+                    Label:
+                        text: "SCIENTIFIC NAME"
+                        font_size: dp(11)
+                        color: 0.4, 0.7, 0.4, 0.7
+                        size_hint_y: None
+                        height: dp(20)
+                        halign: 'left'
+                        text_size: self.size
+
+                    Label:
+                        id: scientific_name_label
+                        text: ""
+                        font_size: dp(14)
+                        italic: True
+                        color: 0.6, 0.85, 0.6, 1
+                        size_hint_y: None
+                        height: dp(25)
+                        halign: 'left'
+                        text_size: self.size
