@@ -1,1 +1,1 @@
-# frontend package
+# widgets package
