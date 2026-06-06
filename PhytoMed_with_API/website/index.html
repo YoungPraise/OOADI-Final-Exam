@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhytoMed — Medicinal Plants & Disease Reference</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark:  #0a4c38;
+      --green:       #127248;
+      --green-light: #2f9a75;
+      --gold:        #f4b642;
+      --gold-dark:   #c9891e;
+      --bg:          #0e1118;
+      --bg-card:     #161b25;
+      --bg-input:    #1e2635;
+      --text:        #f2f3f5;
+      --text-muted:  #8b92a5;
+      --radius:      14px;
+      --radius-sm:   8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+      height: 64px;
+      background: rgba(10, 76, 56, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.3rem; font-weight: 700; color: #fff;
+      text-decoration: none;
+    }
+
+    .nav-brand .badge {
+      background: var(--gold);
+      color: var(--green-dark);
+      font-size: 0.6rem; font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex; gap: 2rem;
+    }
+
+    nav a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--gold); }
+
+    /* ── Hero ─────────────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 5rem 2rem 4rem;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 30%,
+                  rgba(18,114,72,0.35) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 40% at 80% 70%,
+                  rgba(244,182,66,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-leaf {
+      font-size: 5rem;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 0 40px rgba(18,114,72,0.6));
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, #fff 40%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      max-width: 560px;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-btns {
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: var(--green);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(18,114,72,0.45);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 32px rgba(18,114,72,0.6); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 2px solid var(--gold);
+    }
+    .btn-outline:hover { background: rgba(244,182,66,0.08); }
+
+    /* ── Sections ─────────────────────────────────────────────────── */
+    section { padding: 5rem 2rem; }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .section-sub {
+      max-width: 580px;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 3.5rem;
+    }
+
+    /* ── Features grid ────────────────────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(18,114,72,0.5);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p { color: var(--text-muted); font-size: 0.92rem; }
+
+    /* ── Architecture diagram ─────────────────────────────────────── */
+    .arch-diagram {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      row-gap: 1.5rem;
+    }
+
+    .arch-block {
+      background: var(--bg-input);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.4rem;
+      text-align: center;
+      min-width: 130px;
+    }
+
+    .arch-block .label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .arch-block .name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .arch-block.highlight { border-color: var(--green-light); }
+    .arch-block.highlight .name { color: var(--green-light); }
+    .arch-block.api-box { border-color: var(--gold); }
+    .arch-block.api-box .name { color: var(--gold); }
+
+    .arch-arrow {
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      padding: 0 0.5rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Team / About ─────────────────────────────────────────────── */
+    #about { background: linear-gradient(180deg, var(--bg) 0%, rgba(10,76,56,0.08) 100%); }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 2rem;
+    }
+
+    .team-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .team-card:hover {
+      border-color: rgba(244,182,66,0.35);
+      transform: translateY(-4px);
+    }
+
+    .team-avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 1.2rem;
+      display: block;
+      background: var(--bg-input);
+      border: 3px solid var(--green);
+    }
+
+    /* Placeholder avatar when no image */
+    .team-avatar-placeholder {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      margin: 0 auto 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+      background: var(--bg-input);
+      border: 3px solid var(--green);
+    }
+
+    .scrum-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 0.75rem;
+    }
+
+    .badge-sm   { background: rgba(18,114,72,0.25);  color: var(--green-light); }
+    .badge-po   { background: rgba(244,182,66,0.2);  color: var(--gold); }
+    .badge-dev  { background: rgba(41,101,158,0.25); color: #5b9bd5; }
+    .badge-qa   { background: rgba(144,52,52,0.25);  color: #e5747a; }
+
+    .team-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .team-card .role { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.8rem; }
+    .team-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.55; }
+
+    /* ── Stats bar ────────────────────────────────────────────────── */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+      padding: 3rem 2rem;
+      background: var(--green-dark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .stat { text-align: center; }
+    .stat .num { font-size: 2.5rem; font-weight: 800; color: var(--gold); }
+    .stat .lbl { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+
+    /* ── Footer ───────────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2.5rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    footer span { color: var(--green-light); }
+
+    /* ── Divider line ─────────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin: 0;
+    }
+
+    /* ── Responsive ───────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      nav ul { gap: 1rem; }
+      .arch-diagram { flex-direction: column; }
+      .arch-arrow { transform: rotate(90deg); }
+      .stats-bar { gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ────────────────────────────────────────────────────────── -->
+<nav>
+  <a class="nav-brand" href="#hero">
+    🌿 PhytoMed <span class="badge">API</span>
+  </a>
+  <ul>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#about">Team</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ──────────────────────────────────────────────────────────────── -->
+<section id="hero" class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-leaf">🌿</div>
+  <h1>Medicinal Plants &amp;<br/>Disease Reference</h1>
+  <p>
+    A Scrum-built desktop application connecting traditional herbal medicine
+    knowledge with a modern REST API backend — designed for Cameroon and beyond.
+  </p>
+  <div class="hero-btns">
+    <a class="btn btn-primary" href="http://localhost:8000/docs" target="_blank">
+      📡  API Explorer
+    </a>
+    <a class="btn btn-outline" href="#about">Meet the Team</a>
+  </div>
+</section>
+
+<!-- ── Stats bar ─────────────────────────────────────────────────────────── -->
+<div class="stats-bar">
+  <div class="stat"><div class="num">200+</div><div class="lbl">Medicinal Plants</div></div>
+  <div class="stat"><div class="num">150+</div><div class="lbl">Diseases Covered</div></div>
+  <div class="stat"><div class="num">500+</div><div class="lbl">Plant–Disease Links</div></div>
+  <div class="stat"><div class="num">7</div><div class="lbl">REST Endpoints</div></div>
+</div>
+
+<!-- ── Features ──────────────────────────────────────────────────────────── -->
+<section id="features">
+  <div class="container">
+    <span class="section-label">What it does</span>
+    <h2 class="section-title">Everything you need to know<br/>about medicinal plants</h2>
+    <p class="section-sub">
+      PhytoMed combines a curated database, semantic TF-IDF vector search, and a clean
+      REST API — all accessible from the desktop app or any browser.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🔍</span>
+        <h3>Semantic Search</h3>
+        <p>TF-IDF vector search lets you find plants and diseases by describing symptoms
+           in natural language — not just exact keywords.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🌿</span>
+        <h3>Plant Profiles</h3>
+        <p>Full plant entries including Latin name, geographic location, Cameroon-specific
+           habitats, medicinal use, application steps, precautions, and toxicity.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">💊</span>
+        <h3>Disease-to-Remedy</h3>
+        <p>Each disease links to the plants that treat it, with specific preparation methods
+           and which part of the plant to use.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📡</span>
+        <h3>REST API Backend</h3>
+        <p>FastAPI server exposes all data over HTTP — your PC acts as both server and client,
+           and any browser or app can consume the same endpoints.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⚡</span>
+        <h3>Autocomplete</h3>
+        <p>Real-time disease and plant name suggestions as you type, powered by the
+           <code>/autocomplete</code> endpoints.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🖥️</span>
+        <h3>Desktop App</h3>
+        <p>Beautiful Kivy desktop client with dark theme, smooth transitions, expandable
+           remedy cards, and filter chips — all talking to the local API.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Architecture ───────────────────────────────────────────────────────── -->
+<section id="architecture">
+  <div class="container">
+    <span class="section-label">How it works</span>
+    <h2 class="section-title">API-First Architecture</h2>
+    <p class="section-sub">
+      The UI never touches the database directly. Every request flows through the REST API,
+      giving a clean separation of concerns and making the data available to any client.
+    </p>
+
+    <div class="arch-diagram">
+      <div class="arch-block highlight">
+        <div class="label">Desktop App</div>
+        <div class="name">Kivy UI</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-block">
+        <div class="label">HTTP Client</div>
+        <div class="name">ApiClient</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-block api-box">
+        <div class="label">REST API</div>
+        <div class="name">FastAPI<br/>:8000</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-block">
+        <div class="label">Business Logic</div>
+        <div class="name">DatabaseService</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-block highlight">
+        <div class="label">Database</div>
+        <div class="name">SQLite +<br/>TF-IDF Vectors</div>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem; background:var(--bg-card); border-radius:var(--radius); padding:1.75rem 2rem; border:1px solid rgba(255,255,255,0.06);">
+      <h3 style="margin-bottom:1rem; font-size:1rem;">API Endpoints</h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:0.6rem;">
+        <div style="font-family:monospace; font-size:0.85rem; color:var(--gold);">GET /search?q=&amp;type=&amp;top_k=</div>
+        <div style="font-family:monospace; font-size:0.85rem; color:var(--gold);">GET /diseases</div>
+        <div style="font-family:monospace; font-size:0.85rem; color:var(--gold);">GET /diseases/{id}</div>
+        <div style="font-family:monospace; font-size:0.85rem; color:var(--gold);">GET /plants</div>
+        <div style="font-family:monospace; font-size:0.85rem; color:var(--gold);">GET /plants/{id}</div>
+        <div style="font-family:monospace; font-size:0.85rem; color:var(--gold);">GET /autocomplete/diseases?q=</div>
+        <div style="font-family:monospace; font-size:0.85rem; color:var(--gold);">GET /autocomplete/plants?q=</div>
+        <div style="font-family:monospace; font-size:0.85rem; color:var(--gold);">GET /stats</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── About / Team ───────────────────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <span class="section-label">About the project</span>
+    <h2 class="section-title">Built with Scrum</h2>
+    <p class="section-sub">
+      PhytoMed was developed using Scrum methodology — with sprint planning, daily stand-ups,
+      sprint reviews, and retrospectives. Here's the team behind it.
+    </p>
+
+    <div class="team-grid">
+
+      <!-- Scrum Master -->
+      <div class="team-card">
+        <div class="team-avatar-placeholder">👤</div>
+        <!-- Replace with: <img class="team-avatar" src="images/img1.jpg" alt="Scrum Master"> -->
+        <span class="scrum-badge badge-sm">Scrum Master</span>
+        <h3>Team Member 1</h3>
+        <p class="role">Sprint Facilitation &amp; Process</p>
+        <p>
+          Facilitated all sprint ceremonies, removed blockers, tracked velocity,
+          and kept the team aligned on Scrum values and agile principles throughout
+          the project.
+        </p>
+      </div>
+
+      <!-- Product Owner -->
+      <div class="team-card">
+        <div class="team-avatar-placeholder">👤</div>
+        <!-- Replace with: <img class="team-avatar" src="images/img2.jpg" alt="Product Owner"> -->
+        <span class="scrum-badge badge-po">Product Owner</span>
+        <h3>Team Member 2</h3>
+        <p class="role">Backlog &amp; Stakeholder Management</p>
+        <p>
+          Defined and prioritised the product backlog, wrote user stories, managed
+          stakeholder expectations, and ensured every sprint delivered real user value
+          for the medicinal plants domain.
+        </p>
+      </div>
+
+      <!-- Backend Developer -->
+      <div class="team-card">
+        <div class="team-avatar-placeholder">👤</div>
+        <!-- Replace with: <img class="team-avatar" src="images/img3.jpg" alt="Backend Developer"> -->
+        <span class="scrum-badge badge-dev">Backend Developer</span>
+        <h3>Team Member 3</h3>
+        <p class="role">API &amp; Database Engineering</p>
+        <p>
+          Built the FastAPI REST server, designed the SQLite schema, implemented the
+          TF-IDF vector search engine, and created the <code>ApiClient</code> layer
+          that decouples the UI from the database.
+        </p>
+      </div>
+
+      <!-- Frontend / QA -->
+      <div class="team-card">
+        <div class="team-avatar-placeholder">👤</div>
+        <!-- Replace with: <img class="team-avatar" src="images/img4.jpg" alt="Frontend & QA"> -->
+        <span class="scrum-badge badge-qa">Frontend &amp; QA</span>
+        <h3>Team Member 4</h3>
+        <p class="role">UI Development &amp; Quality Assurance</p>
+        <p>
+          Designed and built the Kivy desktop interface, the project website, conducted
+          end-to-end testing across all screens, and verified API contract correctness
+          between client and server.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Scrum process note -->
+    <div style="margin-top:3rem; background:var(--bg-card); border-left:3px solid var(--green-light);
+                border-radius:0 var(--radius) var(--radius) 0; padding:1.5rem 2rem;">
+      <h3 style="margin-bottom:0.75rem; font-size:1rem; color:var(--green-light);">🔄 Our Scrum Process</h3>
+      <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.7;">
+        We ran <strong style="color:var(--text)">2-week sprints</strong>, opening each with sprint planning to pull items from the
+        product backlog into the sprint backlog. Daily stand-ups kept everyone in sync.
+        Sprint reviews demoed working features — including live API calls from the desktop app —
+        and retrospectives continuously improved our workflow. The API-first architecture was
+        decided in Sprint 1 as the highest-value technical story.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────────── -->
+<footer>
+  <p>🌿 PhytoMed &nbsp;·&nbsp; Built with <span>Scrum</span> &nbsp;·&nbsp;
+     API running at <a href="http://localhost:8000/docs" style="color:var(--gold); text-decoration:none;">
+     localhost:8000</a>
+  </p>
+  <p style="margin-top:0.4rem; font-size:0.78rem;">
+    FastAPI &nbsp;·&nbsp; Kivy &nbsp;·&nbsp; SQLite &nbsp;·&nbsp; TF-IDF Vector Search
+  </p>
+</footer>
+
+</body>
+</html>
